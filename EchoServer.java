@@ -9,10 +9,10 @@ import ocsf.server.*;
  * This class overrides some of the methods in the abstract 
  * superclass in order to give more functionality to the server.
  *
- * @author Dr Timothy C. Lethbridge
- * @author Dr Robert Lagani&egrave;re
- * @author Fran&ccedil;ois B&eacute;langer
- * @author Paul Holden
+ * @author DrTimothyC.Lethbridge
+ * @author DrRobertLagan&gravere
+ * @author Franccedilois &eacute;langer
+ * @author PaulHolden
  * @version July 2000
  */
 public class EchoServer extends AbstractServer 
