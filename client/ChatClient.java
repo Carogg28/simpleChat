@@ -68,7 +68,12 @@ public class ChatClient extends AbstractClient
   {
     try
     {
-      sendToServer(message);
+    	if (message.startsWith("#")) {
+    		handleCommand(message);
+    	}
+    	else {
+    		sendToServer(message);
+    	}   
     }
     catch(IOException e)
     {
@@ -78,6 +83,78 @@ public class ChatClient extends AbstractClient
     }
   }
   
+  private void handleCommand(String cmd) {
+	  String[] message = cmd.split(" ");//We separate the command from the parameter entered (if applicable)
+	  String parametre=message[1];//message[0]==command
+	  
+	  if (cmd.equals("#quit")) {
+		  quit();
+	  }
+	  
+	  else if(cmd.equals("#logoff")){
+		 try {
+		  if (this.isConnected()) {
+			  this.closeConnection();
+		  }
+		  else {
+			  System.out.println("Client is already disconnected");
+		  }
+	  }catch (IOException e){
+		 
+	  }
+	  }
+	  
+	  else if(cmd.equals("#sethost")) {
+		  if (this.isConnected()==false) {
+			  this.setHost(parametre);
+		  }
+		  else {
+			  System.out.println("Disconnect to setHost");
+		  }
+	  }
+	  
+	  else if(cmd.equals("#setport")) {
+		  if (this.isConnected()==false) {
+			  this.setPort(Integer.parseInt(parametre));
+		  }
+		  else {
+			  System.out.println("Disconnect to setPort");
+		  }
+	  }
+	  
+	  else if(cmd.equals("#login")) {
+		  if (this.isConnected()==false) {
+			  if (this.isConnected()==false) {
+				  try {
+	                  this.openConnection();
+	              } catch (IOException e) {
+	              }
+		  }
+		  else {
+			  System.out.println("Disconnect to login");
+		  }
+	  }
+	  
+	  else if(cmd.equals("#gethost")) {
+		  if (this.isConnected()) {
+			  System.out.println("Current host: " + this.getHost());
+		  }
+		  else {
+			  System.out.println("Connect to gethost");
+		  }
+	  }
+	  
+	  else if(cmd.equals("#getport")) {
+		  if (this.isConnected()) {
+			  System.out.println("Current port: " + this.getPort());
+		  }
+		  else {
+			  System.out.println("Connect to getport");
+		  }
+	  }
+	  }
+	  
+  }
   /**
    * This method terminates the client.
    */
