@@ -69,7 +69,7 @@ public class ChatClient extends AbstractClient
     try
     {
     	if (message.startsWith("#")) {
-    		handleCommand(message);
+    		handleClientCommands(message);
     	}
     	else {
     		sendToServer(message);
@@ -83,78 +83,88 @@ public class ChatClient extends AbstractClient
     }
   }
   
-  private void handleCommand(String cmd) {
-	  String[] message = cmd.split(" ");//We separate the command from the parameter entered (if applicable)
-	  String parametre=message[1];//message[0]==command
+  private void handleClientCommands(String cmd) throws IOException{
+	  String[] message = cmd.split(" ", 2);
+	  String command=message[0];
 	  
-	  if (cmd.equals("#quit")) {
-		  quit();
-	  }
-	  
-	  else if(cmd.equals("#logoff")){
-		 try {
-		  if (this.isConnected()) {
-			  this.closeConnection();
+	  switch (command){ 
+	  case ("#quit"): 
+		  	quit();
+	  break;
+	  		
+	  case ("#logoff") : 
+		  try {
+			  if (this.isConnected()) {
+				  this.closeConnection();
+			  }
+			  else {
+				  clientUI.display("Client is already disconnected");
+			  }
+		  }catch (IOException e){
+			 
 		  }
-		  else {
-			  System.out.println("Client is already disconnected");
-		  }
-	  }catch (IOException e){
-		 
-	  }
-	  }
-	  
-	  else if(cmd.equals("#sethost")) {
+	  break;
+		  
+	  case ("#sethost") :
 		  if (this.isConnected()==false) {
+			  String parametre=message[1].replace("<", "").replace(">", "");
 			  this.setHost(parametre);
 		  }
 		  else {
-			  System.out.println("Disconnect to setHost");
+			  clientUI.display("Disconnect before setting Host");
 		  }
-	  }
+	  break;
 	  
-	  else if(cmd.equals("#setport")) {
+	  case ("#setport"):
 		  if (this.isConnected()==false) {
+			  String parametre=message[1].replace("<", "").replace(">", "");
 			  this.setPort(Integer.parseInt(parametre));
 		  }
 		  else {
-			  System.out.println("Disconnect to setPort");
+			  clientUI.display("Disconnect before setting Port");
 		  }
-	  }
+	  break;
 	  
-	  else if(cmd.equals("#login")) {
+	  case ("#login"):
 		  if (this.isConnected()==false) {
 			  if (this.isConnected()==false) {
 				  try {
 	                  this.openConnection();
 	              } catch (IOException e) {
+	            	  clientUI.display("Disconnect to login");
+	              }
 	              }
 		  }
-		  else {
-			  System.out.println("Disconnect to login");
-		  }
-	  }
+	  break;
 	  
-	  else if(cmd.equals("#gethost")) {
+	  case ("#gethost"):
 		  if (this.isConnected()) {
-			  System.out.println("Current host: " + this.getHost());
+			  clientUI.display("Current host: " + this.getHost());
 		  }
 		  else {
-			  System.out.println("Connect to gethost");
+			  clientUI.display("Connect to gethost");
 		  }
-	  }
+	  break;
 	  
-	  else if(cmd.equals("#getport")) {
+	  case ("#getport"):
 		  if (this.isConnected()) {
-			  System.out.println("Current port: " + this.getPort());
+			  clientUI.display("Current port: " + this.getPort());
 		  }
 		  else {
-			  System.out.println("Connect to getport");
+			  clientUI.display("Connect to getport");
 		  }
-	  }
-	  }
+	  break;
 	  
-  }
+	  default:
+  		throw new IOException("Please enter a valid command"); 
+	  }
+}
+
+
+	  
+		  
+	  
+  
   /**
    * This method terminates the client.
    */

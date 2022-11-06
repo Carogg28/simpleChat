@@ -2,7 +2,7 @@
 // "Object Oriented Software Engineering" and is issued under the open-source
 // license found at www.lloseng.com 
 
-
+//This class is only resposible for the interaction with the client and not the display of messages or comands
 import ocsf.server.*;
 
 /**
@@ -127,7 +127,7 @@ public class EchoServer extends AbstractServer
   
   @Override 
   synchronized protected void clientDisconnected(ConnectionToClient client) {
-	  System.out.println("Client "+ client + " has disconnected");
+	  System.out.println("Client "+ client + " has connected");
   }
 }
 //End of EchoServer class
