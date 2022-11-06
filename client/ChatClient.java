@@ -98,7 +98,7 @@ public class ChatClient extends AbstractClient
 	 */
   @Override 
   protected void connectionClosed() {
-	  clientUI.display("The conection has been closed");
+	  clientUI.display("This connection has been closed");
 	}
 
 	/**
