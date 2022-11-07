@@ -64,9 +64,12 @@ public class EchoServer extends AbstractServer
 	    	}
     }
     else {
-    	 client.setInfo("loginID", msg.toString());
+    	
     	 System.out.println("Message received: " + msg + " from " + client.getInfo("loginID"));
 		   this.sendToAllClients(msg);
+		   client.setInfo("loginID", msg.toString());
+		   
+		   
 		  
     }
     		 
@@ -127,7 +130,7 @@ serverUI.display("SERVER MESSAGE>" + message);
 			  this.setPort(Integer.parseInt(parametre));;
 		  }
 		  else {
-			  serverUI.display("Disconnect before setting p");
+			  serverUI.display("Disconnect before setting port");
 		  }
 	  break;
 	  
@@ -183,6 +186,7 @@ serverUI.display("SERVER MESSAGE>" + message);
   */
  @Override
  protected void clientConnected(ConnectionToClient client) {
+System.out.println("A new client has connected to the server.");
  System.out.println("Client : "+ client + " has connected.");
  }
 
@@ -196,7 +200,7 @@ serverUI.display("SERVER MESSAGE>" + message);
  
  @Override 
  synchronized protected void clientDisconnected(ConnectionToClient client) {
-	  System.out.println("Client "+ client + " has connected");
+	  System.out.println("Client "+ client + " has disconnected");
  }
 
  

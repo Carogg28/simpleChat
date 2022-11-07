@@ -125,7 +125,7 @@ public class ClientConsole implements ChatIF
     try {
     	loginID = args[0];	
     }catch(ArrayIndexOutOfBoundsException e) {
-    	System.out.println("LOGIN ID missing. Client Activity Terminated.");
+    	System.out.println("ERROR - No login ID specified");
     	 System.exit(-1);//if we dont have a client we cannot yet call quit()
     }
     try
