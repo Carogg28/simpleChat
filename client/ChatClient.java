@@ -37,13 +37,15 @@ public class ChatClient extends AbstractClient
    * @param port The port number to connect on.
    * @param clientUI The interface type variable.
    */
+  String loginID;//variable d'instance
   
-  public ChatClient(String host, int port, ChatIF clientUI) 
+  public ChatClient(String loginID, String host, int port, ChatIF clientUI)
     throws IOException 
   {
     super(host, port); //Call the superclass constructor
     this.clientUI = clientUI;
     openConnection();
+    sendToServer("#login <"+loginID+">");//connectionEstablished()??
   }
 
   
@@ -69,7 +71,7 @@ public class ChatClient extends AbstractClient
     try
     {
     	if (message.startsWith("#")) {
-    		handleClientCommands(message);
+    		handleCommands(message);
     	}
     	else {
     		sendToServer(message);
@@ -77,13 +79,12 @@ public class ChatClient extends AbstractClient
     }
     catch(IOException e)
     {
-      clientUI.display
-        ("Could not send message to server.  Terminating client.");
+      clientUI.display ("The server was not able to handle the message. Client terminated.");
       quit();
     }
   }
   
-  private void handleClientCommands(String cmd) throws IOException{
+  private void handleCommands(String cmd) throws IOException{
 	  String[] message = cmd.split(" ", 2);
 	  String command=message[0];
 	  
@@ -159,11 +160,7 @@ public class ChatClient extends AbstractClient
   		throw new IOException("Please enter a valid command"); 
 	  }
 }
-
-
-	  
-		  
-	  
+  
   
   /**
    * This method terminates the client.
@@ -200,6 +197,11 @@ public class ChatClient extends AbstractClient
  protected void connectionException(Exception exception) {
 	  clientUI.display("The server has shut down");
 	  System.exit(0);
+	}
+  
+  @Override 
+  protected void connectionEstablished() {
+	  
 	}
 
 }
