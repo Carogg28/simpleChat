@@ -47,40 +47,32 @@ public class EchoServer extends AbstractServer
   //---------------------------------------------------------------------------------------------------------------------------------
   
   public void handleMessageFromClient (Object msg, ConnectionToClient client)
-  {
-    System.out.println("Message received: " + msg + " from " + client);
+  {   
     
-    
-    String msgStr=(String)msg;
-    if(msgStr.startsWith("#login")) {//treat locally
-    	//HaSHMAP:savedInfo 
-    	//setInfo and getInfo use HashMaps internally
-    	
-    	//isoler ID
-    	String[] split = ((String)msg).split(" ", 2);
-    	String loginID=split[1];
-    	String key=loginID;
-    	client.setInfo(key,loginID);
+    if(msg.toString()=="#login") {
+    	if(client.getInfo("loginID") != "empty") {
+	    	try {
+			client.sendToClient("Already logged in");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();}
+	    	} else {
+	    		try {
+					client.sendToClient("Please login first");
+				} catch (IOException e) {
+				}
+	    	}
     }
     else {
-    	try{
-    		client.sendToClient("Please login first");
-    		client.close();
-    	}
-    	catch(IOException e){
-    	}
+    	 client.setInfo("loginID", msg.toString());
+    	 System.out.println("Message received: " + msg + " from " + client.getInfo("loginID"));
+		   this.sendToAllClients(msg);
+		  
     }
     		 
-    System.out.println("Message received: " + msg + " from " + client.getInfo("loginID"));
-    this.sendToAllClients((String)client.getInfo("loginID")+ ">"+ msg);
+  
   }
 
- 
- 
- 
- 
-
- 
  
  
  
@@ -99,8 +91,8 @@ public class EchoServer extends AbstractServer
    		handleCommands(message);
    	}
    	else {
-sendToAllClients("SERVER MSG>" + message);    		
-serverUI.display("SERVER MSG>" + message);
+sendToAllClients("SERVER MESSAGE>" + message);    		
+serverUI.display("SERVER MESSAGE>" + message);
 		
    	}   
    }
@@ -215,5 +207,6 @@ serverUI.display("SERVER MSG>" + message);
 
 }
 
+ 
  
  
